@@ -1,0 +1,77 @@
+{
+    "style_guide_version": "1.1.0",
+    "project_name": "Shoppego Sales Dashboard",
+    "meta": {
+        "description": "Strict UI/UX definitions for Shoppego dashboard using React Native libraries.",
+        "objective": "Zero-hallucination reproduction of visual artifacts using specific component libraries."
+    },
+    "tech_stack": {
+        "framework": "React Native (Expo)",
+        "styling": "NativeWind (Tailwind CSS)",
+        "icons": "Expo Vector Icons (MaterialIcons)",
+        "charts": "react-native-gifted-charts"
+    },
+    "design_system": {
+        "colors": {
+            "primary": "#635BFF",
+            "primary_faint": "rgba(99, 91, 255, 0.1)",
+            "primary_transparent": "rgba(99, 91, 255, 0)",
+            "tooltip_bg": "#1F2937",
+            "text_main": "#111827",
+            "text_muted": "#9CA3AF"
+        }
+    },
+    "component_specs": {
+        "chart_module": {
+            "library": "react-native-gifted-charts",
+            "type": "LineChart (Area)",
+            "props_configuration": {
+                "areaChart": true,
+                "curved": true,
+                "isAnimated": true,
+                "animationDuration": 1200,
+                "height": 200,
+                "thickness": 3,
+                "color": "#635BFF",
+                "startFillColor": "#635BFF",
+                "startOpacity": 0.2,
+                "endFillColor": "#635BFF",
+                "endOpacity": 0.0,
+                "hideDataPoints": true,
+                "hideRules": false,
+                "rulesType": "solid",
+                "rulesColor": "#F1F5F9",
+                "yAxisColor": "transparent",
+                "xAxisColor": "transparent",
+                "hideYAxisText": true
+            },
+            "interaction": {
+                "pointerConfig": {
+                    "pointerStripHeight": 160,
+                    "pointerStripColor": "#635BFF",
+                    "pointerStripWidth": 2,
+                    "pointerColor": "#635BFF",
+                    "radius": 6,
+                    "pointerLabelWidth": 100,
+                    "pointerLabelHeight": 90,
+                    "activatePointersOnLongPress": false,
+                    "autoAdjustPointerLabelPosition": false
+                },
+                "custom_tooltip_style": {
+                    "container": "bg-gray-900 rounded-lg px-3 py-2 shadow-xl",
+                    "text": "text-white font-semibold text-lg"
+                }
+            }
+        },
+        "header_module": {
+            "style": "flex-row justify-between items-center px-6 pt-14 pb-4 bg-white/90 backdrop-blur-md border-b border-gray-100"
+        }
+    },
+    "anti_hallucination_rules": [
+        "DO NOT use raw SVGs for the main chart. Use 'react-native-gifted-charts' props defined above.",
+        "DO NOT use Chart.js or Recharts (web libraries).",
+        "ENSURE the chart uses 'curved={true}' to match the smooth design.",
+        "ENSURE the gradient fade goes from Opacity 0.2 to 0.0 vertically.",
+        "Tooltip MUST be a custom View component rendered via the 'pointerLabelComponent' prop."
+    ]
+}
