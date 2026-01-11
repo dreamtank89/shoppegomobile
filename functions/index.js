@@ -5,7 +5,12 @@ const db = admin.firestore();
 
 exports.shoppegoWebhook = functions.https.onRequest(async (req, res) => {
     try {
-        const { storeId, orderData } = req.body;
+        let { storeId, orderData } = req.body;
+
+        // Allow storeId to be passed via Query Params (for easier webhook URL generation)
+        if (!storeId && req.query.storeId) {
+            storeId = req.query.storeId;
+        }
 
         // 1. Verify Store Exists & Authenticate
         if (!storeId || !orderData) return res.status(400).send("Missing payload");

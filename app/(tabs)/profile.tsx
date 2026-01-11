@@ -6,6 +6,7 @@ import { auth, db } from '../../services/firebaseConfig';
 import { useRouter, useFocusEffect } from 'expo-router';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { MaterialIcons } from '@expo/vector-icons';
+import { WebhookCard } from '../../components/WebhookCard';
 
 export default function Profile() {
     const router = useRouter();
@@ -44,17 +45,17 @@ export default function Profile() {
 
     return (
         <SafeAreaView className="flex-1 bg-gray-50">
-            <View className="bg-white p-6 pb-8 border-b border-gray-100">
-                <Text className="text-3xl font-bold text-text_main mb-2">My Profile</Text>
+            <View className="bg-white px-6 pb-6 pt-2 border-b border-gray-100">
+                <Text className="text-3xl font-bold text-text_main mb-6">My Profile</Text>
                 <View className="flex-row items-center space-x-4">
-                    <View className="h-16 w-16 bg-primary rounded-full items-center justify-center">
+                    <View className="h-16 w-16 bg-primary rounded-full items-center justify-center shadow-sm">
                         <Text className="text-white text-2xl font-bold">
                             {user?.displayName?.charAt(0) || user?.email?.charAt(0) || "U"}
                         </Text>
                     </View>
                     <View>
-                        <Text className="text-lg font-bold text-text_main">{user?.displayName || "Store Owner"}</Text>
-                        <Text className="text-text_muted">{user?.email}</Text>
+                        <Text className="text-xl font-bold text-text_main mb-0.5">{user?.displayName || "Store Owner"}</Text>
+                        <Text className="text-text_muted text-sm">{user?.email}</Text>
                     </View>
                 </View>
             </View>
@@ -101,7 +102,12 @@ export default function Profile() {
                     <MaterialIcons name="logout" size={20} color="#EF4444" />
                     <Text className="text-red-500 font-bold">Sign Out</Text>
                 </TouchableOpacity>
-                <View className="h-10" />
+
+                <View className="mt-8">
+                    <WebhookCard storeId="test-store-1" />
+                </View>
+
+                <View className="h-20" />
             </ScrollView>
         </SafeAreaView>
     );
