@@ -2,8 +2,8 @@ import { View, Text, ScrollView, Image, TouchableOpacity, Platform } from 'react
 import { useState, useEffect, useRef } from 'react';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '../../services/firebaseConfig';
+import { doc, setDoc, collection, query, where, limit, getDocs } from 'firebase/firestore';
+import { db, auth } from '../../services/firebaseConfig';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -57,9 +57,10 @@ async function registerForPushNotificationsAsync() {
 }
 
 export default function Dashboard() {
+    const [storeName, setStoreName] = useState('Shoppego');
     const [expoPushToken, setExpoPushToken] = useState('');
-    const notificationListener = useRef<any>();
-    const responseListener = useRef<any>();
+    const notificationListener = useRef<any>(null);
+    const responseListener = useRef<any>(null);
 
     useEffect(() => {
         // Register for push notifications
@@ -97,6 +98,27 @@ export default function Dashboard() {
             }
         };
     }, []);
+
+    useEffect(() => {
+        const fetchStoreName = async () => {
+            const user = auth.currentUser;
+            if (user) {
+                try {
+                    const q = query(collection(db, 'stores'), where('ownerId', '==', user.uid), limit(1));
+                    const querySnapshot = await getDocs(q);
+                    if (!querySnapshot.empty) {
+                        const storeData = querySnapshot.docs[0].data();
+                        if (storeData.storeName) {
+                            setStoreName(storeData.storeName);
+                        }
+                    }
+                } catch (error) {
+                    console.error("Error fetching store name:", error);
+                }
+            }
+        };
+        fetchStoreName();
+    }, []);
     return (
         <SafeAreaView className="flex-1 bg-white" edges={['top']}>
             {/* Header */}
@@ -106,7 +128,7 @@ export default function Dashboard() {
                         {/* Avatar Placeholder - ideally would be an Image */}
                         <MaterialIcons name="person" size={24} color="#009688" />
                     </View>
-                    <Text className="text-xl font-bold text-gray-900">Shoppego</Text>
+                    <Text className="text-xl font-bold text-gray-900">{storeName}</Text>
                 </View>
                 <View className="flex-row gap-4">
                     <TouchableOpacity>
@@ -123,9 +145,6 @@ export default function Dashboard() {
                 {/* Chart Section */}
                 <ChartModule />
 
-
-
-                {/* Key Statistics */}
                 <View className="mb-8">
                     <Text className="text-gray-500 font-semibold text-xs tracking-wider uppercase mb-4">KEY STATISTICS</Text>
 
@@ -169,7 +188,6 @@ export default function Dashboard() {
 
                 {/* Traffic Spike */}
                 <TrafficCard />
-
                 {/* Recent Orders */}
                 <RecentOrders />
 
