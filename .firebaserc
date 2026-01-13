@@ -1,5 +1,7 @@
 {
-  "projects": {},
+  "projects": {
+    "default": "shoppego-dashboard-fp"
+  },
   "targets": {},
   "etags": {}
 }
